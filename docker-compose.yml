@@ -1,0 +1,25 @@
+version: '3'
+services:
+    mysql:
+        build:
+            dockerfile: ./docker/mysql/Dockerfile
+            context: .
+        restart: always
+        env_file: ./.env
+        ports: 
+            - 3306:3306
+        volumes:
+            - ./docker/mysql/conf.d:/etc/mysql/conf.d
+            - ./docker/mysql/data:/var/lib/mysql
+            - ./log/mysql:/var/log/mysql
+    
+    nextcloud:
+        image: nextcloud:20.0
+        restart: always
+        ports:
+            - 80:80
+        depends_on:
+            - mysql
+        volumes:
+            - ./docker/nextcloud/data:/var/www/html/data
+        env_file: ./.env

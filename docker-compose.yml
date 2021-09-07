@@ -17,5 +17,5 @@ services:
         depends_on:
             - postgresql
         volumes:
-            - ./docker/nextcloud/data:/var/www/html/data
+            - ./docker/nextcloud/html:/var/www/html
         env_file: ./.env

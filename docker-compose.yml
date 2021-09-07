@@ -1,25 +1,21 @@
 version: '3'
 services:
-    mysql:
-        build:
-            dockerfile: ./docker/mysql/Dockerfile
-            context: .
+    postgresql:
+        image: arm64v8/postgres:13.4
         restart: always
         env_file: ./.env
         ports: 
             - 3306:3306
         volumes:
-            - ./docker/mysql/conf.d:/etc/mysql/conf.d
-            - ./docker/mysql/data:/var/lib/mysql
-            - ./log/mysql:/var/log/mysql
+            - ./docker/postgresql/data:/var/lib/postgresql/data
     
     nextcloud:
-        image: nextcloud:20.0
+        image: arm64v8/nextcloud:20.0
         restart: always
         ports:
             - 80:80
         depends_on:
-            - mysql
+            - postgresql
         volumes:
             - ./docker/nextcloud/data:/var/www/html/data
         env_file: ./.env
